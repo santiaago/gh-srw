@@ -5,6 +5,8 @@ import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { ThemeProvider } from "@material-ui/core/styles"
+import { BrowserRouter as Router } from "react-router-dom"
+
 import theme from "./theme"
 import "@fontsource/roboto"
 
@@ -12,7 +14,9 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <React.StrictMode>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </React.StrictMode>
   </ThemeProvider>,
   document.getElementById("root")
