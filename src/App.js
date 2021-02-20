@@ -65,7 +65,6 @@ const SelectRepo = ({ repo, url, onChange }) => {
     onChange(event.target.value)
   }
 
-  console.log(repos)
   return (
     <FormControl className={classes.formControl}>
       <InputLabel id="org-select-label">Repo</InputLabel>
@@ -94,7 +93,6 @@ const SelectOrg = ({ org, url, onChange }) => {
     onChange(event.target.value)
   }
 
-  console.log(orgs)
   return (
     <FormControl className={classes.formControl}>
       <InputLabel id="org-select-label">Organisation</InputLabel>
