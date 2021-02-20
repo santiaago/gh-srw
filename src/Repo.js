@@ -30,7 +30,7 @@ const Repo = ({ owner, repo: repoName }) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.paper}><h1>{repo.name}</h1></Paper>
+        <h1>{repo.name}</h1>
       </Grid>
     </Grid>
   )

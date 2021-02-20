@@ -9,25 +9,8 @@ import Typography from "@material-ui/core/Typography"
 import useProfile from "./hooks/useProfile"
 import UserContext from "./UserContext"
 
-const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-})
 
 const ProfileCard = () => {
-  const classes = useStyles()
   const userctx = useContext(UserContext)
   const { user, isLoading, error } = useProfile(userctx.token)
 
@@ -41,20 +24,14 @@ const ProfileCard = () => {
     )
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
-          {user.login}
-        </Typography>
-        <Typography variant="body2" component="p">
-          {user.html_url}
-        </Typography>
-      </CardContent>
-    </Card>
+    <React.Fragment>
+      <Typography color="textSecondary" variant="h5" gutterBottom>
+        {user.login}
+      </Typography>
+      <Typography variant="body2" component="p">
+        {user.html_url}
+      </Typography>
+    </React.Fragment>
   )
 }
 
