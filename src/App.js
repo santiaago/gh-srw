@@ -72,7 +72,11 @@ const SelectRepo = ({ repo, url, onChange }) => {
         {repos &&
           repos
             .sort((r) => r.full_name)
-            .map((r) => <MenuItem key={`repos-${r.id}`} value={r}>{r.name}</MenuItem>)}
+            .map((r) => (
+              <MenuItem key={`repos-${r.id}`} value={r}>
+                {r.name}
+              </MenuItem>
+            ))}
       </Select>
     </FormControl>
   )
@@ -97,7 +101,12 @@ const SelectOrg = ({ org, url, onChange }) => {
     <FormControl className={classes.formControl}>
       <InputLabel id="org-select-label">Organisation</InputLabel>
       <Select value={org} onChange={handleChange}>
-        {orgs && orgs.map((o) => <MenuItem key={`org-${o.id}`} value={o}>{o.login}</MenuItem>)}
+        {orgs &&
+          orgs.map((o) => (
+            <MenuItem key={`org-${o.id}`} value={o}>
+              {o.login}
+            </MenuItem>
+          ))}
       </Select>
     </FormControl>
   )
