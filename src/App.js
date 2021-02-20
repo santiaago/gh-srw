@@ -232,7 +232,7 @@ const Settings = ({ onSubmit }) => {
 }
 
 function App() {
-  const token = process.env.REACT_APP_GH_TOKEN;
+  const token = process.env.REACT_APP_GH_TOKEN
   console.log("token", token, process.env)
   const userContext = { token }
   const [repo, setRepo] = useState()
@@ -255,6 +255,9 @@ function App() {
             </Grid>
             <Grid item xs={8}>
               <Settings onSubmit={onSettingsSubmit} />
+            </Grid>
+            <Grid item>
+              <NewSettings onSubmit={onSettingsSubmit} />
             </Grid>
           </Grid>
           {owner && repo && <Repo owner={owner} repo={repo} />}
