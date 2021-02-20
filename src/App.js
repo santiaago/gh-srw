@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button"
 import Repo from "./Repo"
 import Issues from "./Issues"
 import Projects from "./Projects"
+import useProfile from "./hooks/useProfile"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 
@@ -59,7 +60,10 @@ const Issues2 = (props) => {
           <div>{i.created_at}</div>
         </div>
       ))}
-    </div>
+      </div>
+  )
+}
+
 const useOrganisations = (url, token) => {
   const { data, error } = useSWR([url, token], fetcher)
   return {
@@ -140,6 +144,48 @@ const SelectOrg = ({ org, url, onChange }) => {
   )
 }
 
+const NewSettings = ({ onSubmit }) => {
+  const userctx = useContext(UserContext)
+  const { user, isLoading, error } = useProfile(userctx.token)
+  const [org, setOrg] = useState()
+  const [repo, setRepo] = useState()
+  if (isLoading) {
+    return "loading settings"
+  }
+  if (error) {
+    return "unable to load settings"
+  }
+  const onOrgChange = (org) => {
+    console.log(org)
+    setOrg(org)
+  }
+  const onRepoChange = (repo) => {
+    console.log(repo)
+    setRepo(repo)
+  }
+  const onSubmitSettings = () => {
+    if (org && repo) {
+      onSubmit(org.login, repo.name)
+    }
+  }
+
+  return (
+    <React.Fragment>
+      hello from user {user.organizations_url}
+      <SelectOrg
+        org={org}
+        url={user.organizations_url}
+        onChange={onOrgChange}
+      />
+      <SelectRepo
+        repo={repo}
+        url={org && org.repos_url}
+        onChange={onRepoChange}
+      />
+      <Button variant="contained" color="primary" onClick={onSubmitSettings}>
+        Submit
+      </Button>
+    </React.Fragment>
   )
 }
 
