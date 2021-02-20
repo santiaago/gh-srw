@@ -21,7 +21,7 @@ const Repo = ({ org, repo: repoName }) => {
   if (error)
     return (
       <div>
-        failed to load repo, info:{error.info.message} status:{error.status}{" "}
+        failed to load repo, info:{error.info && error.info.message} status:{error.status}{" "}
         message:{error.message}
       </div>
     )

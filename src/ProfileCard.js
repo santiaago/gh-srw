@@ -18,7 +18,7 @@ const ProfileCard = () => {
   if (error)
     return (
       <div>
-        failed to load profile, info:{error.info.message} status:{error.status}{" "}
+        failed to load profile, info:{error.info && error.info.message} status:{error.status}{" "}
         message:{error.message}
       </div>
     )

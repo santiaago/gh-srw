@@ -31,7 +31,7 @@ const Loading =({resource}) => {
 const Error = ({resource, error}) => {
     return (
       <div>
-        failed to load {resource}, info:{error.info.message} status:{error.status}{" "}
+        failed to load {resource}, info:{error.info && error.info.message} status:{error.status}{" "}
         message:{error.message}
       </div>
     )
