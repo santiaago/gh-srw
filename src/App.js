@@ -17,53 +17,6 @@ import useProfile from "./hooks/useProfile"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
 
-const useIssues = (owner, repo, pageIndex, token) => {
-  const { data, error } = useSWR(
-    [
-      `https://api.github.com/repos/${owner}/${repo}/issues?state=open&page=${pageIndex}`,
-      token,
-    ],
-    fetcher
-  )
-  return {
-    issues: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const Issues2 = (props) => {
-  const { owner, reponame, pageIndex } = props
-  const userctx = useContext(UserContext)
-  const { issues, isLoading, error } = useIssues(
-    owner,
-    reponame,
-    pageIndex,
-    userctx.token
-  )
-  if (isLoading) return <div>loading issues...</div>
-  if (error)
-    return (
-      <div>
-        failed to load issues, info:{error.info.message} status:{error.status}{" "}
-        message:{error.message}
-      </div>
-    )
-
-  console.log(issues)
-  return (
-    <div>
-      {issues.map((i) => (
-        <div key={i.node_id}>
-          <div>{i.title}</div>
-          <div>state: {i.state}</div>
-          <div>{i.created_at}</div>
-        </div>
-      ))}
-      </div>
-  )
-}
-
 const useOrganisations = (url, token) => {
   const { data, error } = useSWR([url, token], fetcher)
   return {
