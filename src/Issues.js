@@ -27,10 +27,11 @@ const getIssuesKey = (pageIndex, previousPageData, owner, repo, token) => {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+
+  container: {
     padding: theme.spacing(3),
-    color: theme.palette.text.secondary,
-  },
+    paddingTop: theme.spacing(6)
+  }
 }))
 
 const Issues = ({ org, repo }) => {
@@ -53,7 +54,7 @@ const Issues = ({ org, repo }) => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.container}>
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom>
             Github issues:
