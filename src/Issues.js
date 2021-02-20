@@ -51,12 +51,6 @@ const Issues = ({ org, repo }) => {
     }
   }
 
-  console.log(
-    "slice",
-    page,
-    data && data.length,
-    data && data.slice(page, page + 1)[0][0].number
-  )
   return (
     <React.Fragment>
       <Grid container spacing={3}>
