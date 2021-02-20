@@ -67,6 +67,24 @@ const useOrganisations = (url, token) => {
   }
 }
 
+const useRepos = (url, token) => {
+  const { data, error } = useSWR([`${url}?per_page=100`, token], fetcher)
+  const byname = (r1, r2) => {
+    if (r1.full_name.toLowerCase() < r2.full_name.toLowerCase()) {
+      return -1
+    }
+    if (r1.full_name.toLowerCase() > r2.full_name.toLowerCase()) {
+      return 1
+    }
+    return 0
+  }
+
+  return {
+    repos: data && data.sort(byname),
+    isLoading: !error && !data,
+    error: error,
+  }
+}
   )
 }
 
