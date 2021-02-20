@@ -7,6 +7,7 @@ import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 import ProfileCard from "./ProfileCard"
 import Grid from "@material-ui/core/Grid"
+import Card from "@material-ui/core/Card"
 import TextField from "@material-ui/core/TextField"
 import Paper from "@material-ui/core/Paper"
 import Button from "@material-ui/core/Button"
@@ -16,6 +17,10 @@ import Projects from "./Projects"
 import useProfile from "./hooks/useProfile"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
+import InputLabel from "@material-ui/core/InputLabel"
+import { findByLabelText } from "@testing-library/react"
+import { makeStyles } from "@material-ui/core/styles"
+import FormControl from "@material-ui/core/FormControl"
 
 const useOrganisations = (url, token) => {
   const { data, error } = useSWR([url, token], fetcher)
@@ -49,12 +54,12 @@ const SelectRepo = ({ repo, url, onChange }) => {
   const userctx = useContext(UserContext)
   const { repos, isLoading, error } = useRepos(url, userctx.token)
 
-  if (isLoading) {
-    return "loading repo"
-  }
-  if (error) {
-    return "unable to load repo"
-  }
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      minWidth: 166,
+    },
+  }))
+  const classes = useStyles()
 
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -62,13 +67,15 @@ const SelectRepo = ({ repo, url, onChange }) => {
 
   console.log(repos)
   return (
-    <Select value={repo} onChange={handleChange}>
-      {repos
-        .sort((r) => r.full_name)
-        .map((r) => (
-          <MenuItem value={r}>{r.name}</MenuItem>
-        ))}
-    </Select>
+    <FormControl className={classes.formControl}>
+      <InputLabel id="org-select-label">Repo</InputLabel>
+      <Select value={repo} onChange={handleChange}>
+        {repos &&
+          repos
+            .sort((r) => r.full_name)
+            .map((r) => <MenuItem value={r}>{r.name}</MenuItem>)}
+      </Select>
+    </FormControl>
   )
 }
 
@@ -76,12 +83,12 @@ const SelectOrg = ({ org, url, onChange }) => {
   const userctx = useContext(UserContext)
   const { orgs, isLoading, error } = useOrganisations(url, userctx.token)
 
-  if (isLoading) {
-    return "loading org"
-  }
-  if (error) {
-    return "unable to load org"
-  }
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      minWidth: 166,
+    },
+  }))
+  const classes = useStyles()
 
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -89,11 +96,12 @@ const SelectOrg = ({ org, url, onChange }) => {
 
   console.log(orgs)
   return (
-    <Select value={org} onChange={handleChange}>
-      {orgs.map((o) => (
-        <MenuItem value={o}>{o.login}</MenuItem>
-      ))}
-    </Select>
+    <FormControl className={classes.formControl}>
+      <InputLabel id="org-select-label">Organisation</InputLabel>
+      <Select value={org} onChange={handleChange}>
+        {orgs && orgs.map((o) => <MenuItem value={o}>{o.login}</MenuItem>)}
+      </Select>
+    </FormControl>
   )
 }
 
@@ -124,7 +132,6 @@ const NewSettings = ({ onSubmit }) => {
 
   return (
     <React.Fragment>
-      hello from user {user.organizations_url}
       <SelectOrg
         org={org}
         url={user.organizations_url}
@@ -135,7 +142,7 @@ const NewSettings = ({ onSubmit }) => {
         url={org && org.repos_url}
         onChange={onRepoChange}
       />
-      <Button variant="contained" color="primary" onClick={onSubmitSettings}>
+      <Button color="primary" size="large" onClick={onSubmitSettings}>
         Submit
       </Button>
     </React.Fragment>
@@ -145,6 +152,13 @@ const NewSettings = ({ onSubmit }) => {
 const Settings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()
   const [owner, setOwner] = useState()
+
+  const useStyles = makeStyles((theme) => ({
+    form: {
+      display: "flex",
+    },
+  }))
+  const classes = useStyles()
 
   const handleRepoChange = (event) => {
     setRepo(event.target.value)
@@ -164,23 +178,21 @@ const Settings = ({ onSubmit }) => {
   }
 
   return (
-    <Paper>
-      <form noValidate autoComplete="off">
-        <TextField
-          id="standard-basic"
-          label="Owner"
-          onChange={handleOwnerChange}
-        />
-        <TextField
-          id="standard-basic"
-          label="Repo"
-          onChange={handleRepoChange}
-        />
-        <Button onClick={() => handleSubmit(owner, repo)} color="primary">
-          Submit
-        </Button>
-      </form>
-    </Paper>
+    <form noValidate autoComplete="off" className={classes.form}>
+      <TextField
+        id="standard-basic"
+        label="Organisation"
+        onChange={handleOwnerChange}
+      />
+      <TextField id="standard-basic" label="Repo" onChange={handleRepoChange} />
+      <Button
+        size="large"
+        color="primary"
+        onClick={() => handleSubmit(owner, repo)}
+      >
+        Submit
+      </Button>
+    </form>
   )
 }
 
@@ -202,20 +214,26 @@ function App() {
       <SWRConfig value={{ shouldRetryOnError: false }}>
         <AppBar />
         <Box>
-          <Grid container spacing={3}>
-            <Grid item xs={4}>
-              <ProfileCard />
+          <Paper>
+            <Grid container spacing={3}>
+              <Grid xs={4} item>
+                <ProfileCard />
+              </Grid>
+              <Grid xs={8} item>
+                <Grid container>
+                  <Settings onSubmit={onSettingsSubmit} />
+                </Grid>
+                <Grid container>
+                  <NewSettings onSubmit={onSettingsSubmit} />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={8}>
-              <Settings onSubmit={onSettingsSubmit} />
-            </Grid>
-            <Grid item>
-              <NewSettings onSubmit={onSettingsSubmit} />
-            </Grid>
-          </Grid>
-          {owner && repo && <Repo owner={owner} repo={repo} />}
-          {owner && repo && <Issues owner={owner} repo={repo} />}
-          {owner && repo && <Projects owner={owner} repo={repo} />}
+          </Paper>
+          <Paper>
+            {owner && repo && <Repo owner={owner} repo={repo} />}
+            {owner && repo && <Issues owner={owner} repo={repo} />}
+            {owner && repo && <Projects owner={owner} repo={repo} />}
+          </Paper>
         </Box>
       </SWRConfig>
     </UserContext.Provider>
