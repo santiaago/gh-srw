@@ -58,6 +58,15 @@ const Issues2 = (props) => {
         </div>
       ))}
     </div>
+const useOrganisations = (url, token) => {
+  const { data, error } = useSWR([url, token], fetcher)
+  return {
+    orgs: data,
+    isLoading: !error && !data,
+    error: error,
+  }
+}
+
   )
 }
 
