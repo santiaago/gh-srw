@@ -21,6 +21,10 @@ import InputLabel from "@material-ui/core/InputLabel"
 import { findByLabelText } from "@testing-library/react"
 import { makeStyles } from "@material-ui/core/styles"
 import FormControl from "@material-ui/core/FormControl"
+import { Route, Switch } from "react-router"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
+import { useHistory } from "react-router-dom"
 
 const useOrganisations = (url, token) => {
   const { data, error } = useSWR([url, token], fetcher)
@@ -214,14 +218,25 @@ const TypeSettings = ({ onSubmit }) => {
 function App() {
   const token = process.env.REACT_APP_GH_TOKEN
   console.log("token", token, process.env)
+  const history = useHistory()
   const userContext = { token }
   const [repo, setRepo] = useState()
   const [org, setOrg] = useState()
   const [pageCount, setPageCount] = useState(0)
+  const [currentTab, setCurrentTab] = useState(0)
 
   const onSettingsSubmit = (org, repo) => {
     setOrg(org)
     setRepo(repo)
+  }
+
+  const handleTabChange = (event, newValue) => {
+    if(newValue == 0){
+      history.push("/issues")
+    } else if(newValue == 1){
+      history.push("/projects")
+    }
+    setCurrentTab(newValue)
   }
 
   return (
@@ -246,8 +261,20 @@ function App() {
           </Paper>
           <Paper>
             {org && repo && <Repo org={org} repo={repo} />}
-            {org && repo && <Issues org={org} repo={repo} />}
-            {org && repo && <Projects org={org} repo={repo} />}
+            <Tabs value={currentTab} onChange={handleTabChange}>
+              <Tab label="issues" />
+              <Tab label="projects" />
+            </Tabs>
+            <Paper>
+            <Switch>
+              <Route path="/issues">
+                {org && repo && <Issues org={org} repo={repo} />}
+              </Route>
+              <Route path="/projects">
+                {org && repo && <Projects org={org} repo={repo} />}
+              </Route>
+            </Switch>
+            </Paper>
           </Paper>
         </Box>
       </SWRConfig>
