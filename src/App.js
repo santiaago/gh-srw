@@ -115,6 +115,31 @@ const SelectRepo = ({ repo, url, onChange }) => {
   )
 }
 
+const SelectOrg = ({ org, url, onChange }) => {
+  const userctx = useContext(UserContext)
+  const { orgs, isLoading, error } = useOrganisations(url, userctx.token)
+
+  if (isLoading) {
+    return "loading org"
+  }
+  if (error) {
+    return "unable to load org"
+  }
+
+  const handleChange = (event) => {
+    onChange(event.target.value)
+  }
+
+  console.log(orgs)
+  return (
+    <Select value={org} onChange={handleChange}>
+      {orgs.map((o) => (
+        <MenuItem value={o}>{o.login}</MenuItem>
+      ))}
+    </Select>
+  )
+}
+
   )
 }
 
