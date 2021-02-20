@@ -156,7 +156,7 @@ const SelectSettings = ({ onSubmit }) => {
 
 const TypeSettings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()
-  const [org, setOrg] = useState()
+  const [org, setOrg] = useState("")
 
   const useStyles = makeStyles((theme) => ({
     form: {
