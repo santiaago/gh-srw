@@ -13,6 +13,8 @@ import Button from "@material-ui/core/Button"
 import Repo from "./Repo"
 import Issues from "./Issues"
 import Projects from "./Projects"
+import MenuItem from "@material-ui/core/MenuItem"
+import Select from "@material-ui/core/Select"
 
 const useIssues = (owner, repo, pageIndex, token) => {
   const { data, error } = useSWR(
@@ -85,6 +87,34 @@ const useRepos = (url, token) => {
     error: error,
   }
 }
+
+const SelectRepo = ({ repo, url, onChange }) => {
+  const userctx = useContext(UserContext)
+  const { repos, isLoading, error } = useRepos(url, userctx.token)
+
+  if (isLoading) {
+    return "loading repo"
+  }
+  if (error) {
+    return "unable to load repo"
+  }
+
+  const handleChange = (event) => {
+    onChange(event.target.value)
+  }
+
+  console.log(repos)
+  return (
+    <Select value={repo} onChange={handleChange}>
+      {repos
+        .sort((r) => r.full_name)
+        .map((r) => (
+          <MenuItem value={r}>{r.name}</MenuItem>
+        ))}
+    </Select>
+  )
+}
+
   )
 }
 
