@@ -110,6 +110,12 @@ const NewSettings = ({ onSubmit }) => {
   const { user, isLoading, error } = useProfile(userctx.token)
   const [org, setOrg] = useState()
   const [repo, setRepo] = useState()
+  const useStyles = makeStyles((theme) => ({
+    form: {
+      display: "flex",
+    },
+  }))
+  const classes = useStyles()
   if (isLoading) {
     return "loading settings"
   }
@@ -131,7 +137,7 @@ const NewSettings = ({ onSubmit }) => {
   }
 
   return (
-    <React.Fragment>
+    <form noValidate autoComplete="off" className={classes.form}>
       <SelectOrg
         org={org}
         url={user.organizations_url}
@@ -145,7 +151,7 @@ const NewSettings = ({ onSubmit }) => {
       <Button color="primary" size="large" onClick={onSubmitSettings}>
         Submit
       </Button>
-    </React.Fragment>
+      </form>
   )
 }
 
