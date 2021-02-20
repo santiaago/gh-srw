@@ -13,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Repo = ({ owner, repo: repoName }) => {
+const Repo = ({ org, repo: repoName }) => {
   const classes = useStyles()
   const userctx = useContext(UserContext)
-  const { repo, isLoading, error } = useRepo(owner, repoName, userctx.token)
+  const { repo, isLoading, error } = useRepo(org, repoName, userctx.token)
   if (isLoading) return <div>loading repo...</div>
   if (error)
     return (

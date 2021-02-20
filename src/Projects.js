@@ -37,10 +37,10 @@ const Error = ({resource, error}) => {
     )
 }
 
-const useProjects = (owner, repo, token) => {
+const useProjects = (org, repo, token) => {
   const { data, error } = useSWR(
     [
-      `https://api.github.com/repos/${owner}/${repo}/projects?state=open`,
+      `https://api.github.com/repos/${org}/${repo}/projects?state=open`,
       token,
     ],
     fetcher
@@ -79,9 +79,9 @@ const useCardInfo = (url, token) => {
   }
 }
 
-const ProjectList = ({ owner, repo, onSelected }) => {
+const ProjectList = ({ org, repo, onSelected }) => {
   const userctx = useContext(UserContext)
-  const { projects, isLoading, error } = useProjects(owner, repo, userctx.token)
+  const { projects, isLoading, error } = useProjects(org, repo, userctx.token)
 
   if (isLoading) return <Loading resource="projects"/>
   if (error) return <Error resource="projects" error={error} />
@@ -173,7 +173,7 @@ const ProjectSection = ({ project, onColumnSelected }) => {
   )
 }
 
-const Projects = ({ owner, repo }) => {
+const Projects = ({ org, repo }) => {
   const [project, setProject] = useState()
   const [col, setCol] = useState()
 
@@ -195,7 +195,7 @@ const Projects = ({ owner, repo }) => {
           <Grid container spacing={3}>
             <Grid item xs={4}>
               <ProjectList
-                owner={owner}
+                org={org}
                 repo={repo}
                 onSelected={onProjectSelected}
               />

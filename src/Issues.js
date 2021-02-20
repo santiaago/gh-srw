@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Issues = ({ owner, repo }) => {
+const Issues = ({ org, repo }) => {
   const classes = useStyles()
   const userContext = useContext(UserContext)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(30)
   const { data, size, setSize } = useSWRInfinite(
-    (pi, ppd) => getIssuesKey(pi, ppd, owner, repo, userContext.token),
+    (pi, ppd) => getIssuesKey(pi, ppd, org, repo, userContext.token),
     fetcher
   )
 

@@ -158,7 +158,7 @@ const SelectSettings = ({ onSubmit }) => {
 
 const TypeSettings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()
-  const [owner, setOwner] = useState()
+  const [org, setOrg] = useState()
 
   const useStyles = makeStyles((theme) => ({
     form: {
@@ -171,14 +171,14 @@ const TypeSettings = ({ onSubmit }) => {
     setRepo(event.target.value)
   }
 
-  const handleOwnerChange = (event) => {
-    setOwner(event.target.value)
+  const handleOrgChange = (event) => {
+    setOrg(event.target.value)
   }
 
-  const handleSubmit = async (owner, repo) => {
+  const handleSubmit = async (org, repo) => {
     try {
-      console.log("handle submit", owner, repo)
-      onSubmit(owner, repo)
+      console.log("handle submit", org, repo)
+      onSubmit(org, repo)
     } catch (err) {
       console.error("something went wrong while adding organisation", err)
     }
@@ -189,13 +189,14 @@ const TypeSettings = ({ onSubmit }) => {
       <TextField
         id="standard-basic"
         label="Organisation"
-        onChange={handleOwnerChange}
+        onChange={handleOrgChange}
+        value={org}
       />
       <TextField id="standard-basic" label="Repo" onChange={handleRepoChange} />
       <Button
         size="large"
         color="primary"
-        onClick={() => handleSubmit(owner, repo)}
+        onClick={() => handleSubmit(org, repo)}
       >
         Submit
       </Button>
@@ -208,11 +209,11 @@ function App() {
   console.log("token", token, process.env)
   const userContext = { token }
   const [repo, setRepo] = useState()
-  const [owner, setOwner] = useState()
+  const [org, setOrg] = useState()
   const [pageCount, setPageCount] = useState(0)
 
-  const onSettingsSubmit = (owner, repo) => {
-    setOwner(owner)
+  const onSettingsSubmit = (org, repo) => {
+    setOrg(org)
     setRepo(repo)
   }
 
@@ -237,9 +238,9 @@ function App() {
             </Grid>
           </Paper>
           <Paper>
-            {owner && repo && <Repo owner={owner} repo={repo} />}
-            {owner && repo && <Issues owner={owner} repo={repo} />}
-            {owner && repo && <Projects owner={owner} repo={repo} />}
+            {org && repo && <Repo org={org} repo={repo} />}
+            {org && repo && <Issues org={org} repo={repo} />}
+            {org && repo && <Projects org={org} repo={repo} />}
           </Paper>
         </Box>
       </SWRConfig>
