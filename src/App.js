@@ -105,7 +105,7 @@ const SelectOrg = ({ org, url, onChange }) => {
   )
 }
 
-const NewSettings = ({ onSubmit }) => {
+const SelectSettings = ({ onSubmit }) => {
   const userctx = useContext(UserContext)
   const { user, isLoading, error } = useProfile(userctx.token)
   const [org, setOrg] = useState()
@@ -122,6 +122,7 @@ const NewSettings = ({ onSubmit }) => {
   if (error) {
     return "unable to load settings"
   }
+  
   const onOrgChange = (org) => {
     console.log(org)
     setOrg(org)
@@ -155,7 +156,7 @@ const NewSettings = ({ onSubmit }) => {
   )
 }
 
-const Settings = ({ onSubmit }) => {
+const TypeSettings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()
   const [owner, setOwner] = useState()
 
@@ -225,12 +226,12 @@ function App() {
               <Grid xs={4} item>
                 <ProfileCard />
               </Grid>
-              <Grid xs={8} item>
-                <Grid container>
-                  <Settings onSubmit={onSettingsSubmit} />
+              <Grid xs={8} item container spacing={2}>
+                <Grid item xs={12}>
+                  <TypeSettings onSubmit={onSettingsSubmit} />
                 </Grid>
-                <Grid container>
-                  <NewSettings onSubmit={onSettingsSubmit} />
+                <Grid item xs={12}>
+                  <SelectSettings onSubmit={onSettingsSubmit} />
                 </Grid>
               </Grid>
             </Grid>
