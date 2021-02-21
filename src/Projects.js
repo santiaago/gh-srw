@@ -135,13 +135,25 @@ const ColumnsList = ({ url, onColumnSelected }) => {
   )
 }
 
+const CardsList = ({ url }) => {
+  const userctx = useContext(UserContext)
+  const { cards, isLoading, error } = useCards(url, userctx.token)
+
+  if (isLoading) return <Loading resource="cards" />
+  if (error) return <Error resource="cards" error={error} />
+
+  return (
+    <List component="nav" aria-label="secondary" dense>
+      {cards.map((c, i) => (
+        <ListItem button key={`list-card-${c.id}`}>
+          <CardInfo key={`card-${c.id}`} url={c.content_url} />
         </ListItem>
       ))}
     </List>
   )
 }
 
-const CardInfo = ({url}) => {
+const CardInfo = ({ url }) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
 
@@ -167,23 +179,13 @@ const CardInfo = ({url}) => {
   )
 }
 
-const ProjectCards = ({col}) => {
-  console.log("project cards, col", col)
-  const userctx = useContext(UserContext)
-  const { cards, isLoading, error } = useCards(col.cards_url, userctx.token)
-
-  if (isLoading) return <Loading resource="cards"/>
-  if (error) return <Error resource="cards" error={error} />
-
-  console.log(cards)
+const ProjectCards = ({ col }) => {
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         Cards of {col.name}
       </Typography>
-      {cards.map(c => (
-        <CardInfo key={`card-${c.id}`} url={c.content_url} />
-      ))}
+      <CardsList url={col.cards_url} />
     </Box>
   )
 }
@@ -191,10 +193,10 @@ const ProjectCards = ({col}) => {
 const ProjectSection = ({ project, onColumnSelected }) => {
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Selected project {project.name}
-      </Typography>
-      <ColumnsList url={project.columns_url} onColumnSelected={onColumnSelected} />
+      <ColumnsList
+        url={project.columns_url}
+        onColumnSelected={onColumnSelected}
+      />
     </Box>
   )
 }
