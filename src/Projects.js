@@ -145,8 +145,20 @@ const CardInfo = ({url}) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
 
-  if (isLoading) return <Loading resource="card info"/>
-  if (error) return <Error resource="card info" error={error} />
+  if (isLoading) {
+    return (
+      <Typography variant="body2" gutterBottom>
+        <Loading resource="card info" />
+      </Typography>
+    )
+  }
+  if (error) {
+    return (
+      <Typography variant="body2" gutterBottom>
+        <Error resource="card info" error={error} />
+      </Typography>
+    )
+  }
 
   return (
     <Typography variant="body2" gutterBottom>
