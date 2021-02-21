@@ -53,4 +53,16 @@ const TopAppBar = () => {
   )
 }
 
+export const FooterBar = ({}) => {
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <Typography variant="body2">
+          SWR and github showcase by @santiaago
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  )
+}
+
 export default TopAppBar
