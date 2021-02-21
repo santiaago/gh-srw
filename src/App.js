@@ -8,6 +8,7 @@ import UserContext from "./UserContext"
 import ProfileCard from "./ProfileCard"
 import Grid from "@material-ui/core/Grid"
 import Card from "@material-ui/core/Card"
+import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import Paper from "@material-ui/core/Paper"
 import Button from "@material-ui/core/Button"
@@ -220,6 +221,14 @@ const RepoSection = ({ org, repo }) => {
   const history = useHistory()
   const [currentTab, setCurrentTab] = useState(0)
 
+  const useStyles = makeStyles((theme) => ({
+    empty: {
+      paddingTop: theme.spacing(12),
+      minHeight: theme.spacing(70),
+    },
+  }))
+  const classes = useStyles()
+
   const handleTabChange = (event, newValue) => {
     if (newValue == 0) {
       history.push("/issues")
@@ -227,6 +236,16 @@ const RepoSection = ({ org, repo }) => {
       history.push("/projects")
     }
     setCurrentTab(newValue)
+  }
+
+  if (!org || !repo) {
+    return (
+      <Box className={classes.empty}>
+        <Typography variant="h6" gutterBottom>
+          Select an organisation and a repo to explore
+        </Typography>
+      </Box>
+    )
   }
 
   return (
@@ -262,7 +281,6 @@ function App() {
     setRepo(repo)
   }
 
-  
   return (
     <UserContext.Provider value={userContext}>
       <SWRConfig value={{ shouldRetryOnError: false }}>
