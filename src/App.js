@@ -2,7 +2,7 @@ import "./App.css"
 import useSWR, { useSWRInfinite, SWRConfig } from "swr"
 import React, { useContext, useState } from "react"
 import Box from "@material-ui/core/Box"
-import AppBar from "./AppBar"
+import TopAppBar from "./AppBar"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 import ProfileCard from "./ProfileCard"
@@ -266,7 +266,7 @@ function App() {
   return (
     <UserContext.Provider value={userContext}>
       <SWRConfig value={{ shouldRetryOnError: false }}>
-        <AppBar />
+        <TopAppBar />
         <Box>
           <Paper>
             <Container maxWidth="xl">

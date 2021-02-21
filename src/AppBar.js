@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ButtonAppBar = () => {
+const TopAppBar = () => {
   const userctx = useContext(UserContext)
   const { user, isLoading, error } = useProfile(userctx.token)
   const classes = useStyles()
@@ -53,4 +53,4 @@ const ButtonAppBar = () => {
   )
 }
 
-export default ButtonAppBar
+export default TopAppBar
