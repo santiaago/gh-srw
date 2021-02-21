@@ -108,20 +108,33 @@ const ProjectList = ({ org, repo, onSelected }) => {
 const ColumnsList = ({ url, onColumnSelected }) => {
   const userctx = useContext(UserContext)
   const { columns, isLoading, error } = useColumns(url, userctx.token)
+  const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
   if (isLoading) return <Loading resource="columns" />
   if (error) return <Error resource="columns" error={error} />
 
-  const onColumnClicked = (c) => {
+  const onColumnClicked = (c, i) => {
+    setSelectedIndex(i)
     console.log(c)
     onColumnSelected(c)
   }
 
   return (
-    <List component="nav" aria-label="secondary">
-      {columns.map((c) => (
-        <ListItem button key={`list-cols-${c.id}`}>
-          <ListItemText primary={c.name} onClick={() => onColumnClicked(c)} />
+    <List component="nav" aria-label="secondary" dense>
+      {columns.map((c, i) => (
+        <ListItem
+          button
+          key={`list-cols-${c.id}`}
+          selected={i === selectedIndex}
+          onClick={() => onColumnClicked(c, i)}
+        >
+          <ListItemText primary={c.name} />
+        </ListItem>
+      ))}
+    </List>
+  )
+}
+
         </ListItem>
       ))}
     </List>
