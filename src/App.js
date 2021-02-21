@@ -230,9 +230,9 @@ const RepoSection = ({ org, repo }) => {
   const classes = useStyles()
 
   const handleTabChange = (event, newValue) => {
-    if (newValue == 0) {
+    if (newValue === 0) {
       history.push("/issues")
-    } else if (newValue == 1) {
+    } else if (newValue === 1) {
       history.push("/projects")
     }
     setCurrentTab(newValue)
