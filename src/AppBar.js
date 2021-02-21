@@ -43,9 +43,9 @@ const TopAppBar = () => {
             SWR and github showcase
           </Typography>
           <Typography>
-              {isLoading? "loading...": null}
-              {error? "failed loading profile": null}
-              {user && user.login}
+            {isLoading ? "loading..." : null}
+            {error ? "failed loading profile" : null}
+            {user && user.login}
           </Typography>
         </Toolbar>
       </AppBar>
