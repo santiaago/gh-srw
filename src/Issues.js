@@ -29,7 +29,6 @@ const getIssuesKey = (pageIndex, previousPageData, owner, repo, token) => {
 const useStyles = makeStyles((theme) => ({
 
   container: {
-    padding: theme.spacing(3),
     paddingTop: theme.spacing(6)
   }
 }))

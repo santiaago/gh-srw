@@ -173,7 +173,15 @@ const ProjectSection = ({ project, onColumnSelected }) => {
   )
 }
 
+const useStyles = makeStyles((theme) => ({
+
+  container: {
+    paddingTop: theme.spacing(6)
+  }
+}))
+
 const Projects = ({ org, repo }) => {
+  const classes = useStyles()
   const [project, setProject] = useState()
   const [col, setCol] = useState()
 
@@ -187,7 +195,7 @@ const Projects = ({ org, repo }) => {
 
   return (
     <React.Fragment>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.container}>
         <Grid item xs={12}>
           <Typography variant="h5" gutterBottom>
             Projects:
