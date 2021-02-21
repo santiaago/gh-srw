@@ -24,25 +24,22 @@ import Divider from "@material-ui/core/Divider"
 import InboxIcon from "@material-ui/icons/Inbox"
 import DraftsIcon from "@material-ui/icons/Drafts"
 
-const Loading =({resource}) => {
+const Loading = ({ resource }) => {
   return <div>loading {resource}...</div>
 }
 
-const Error = ({resource, error}) => {
-    return (
-      <div>
-        failed to load {resource}, info:{error.info && error.info.message} status:{error.status}{" "}
-        message:{error.message}
-      </div>
-    )
+const Error = ({ resource, error }) => {
+  return (
+    <div>
+      failed to load {resource}, info:{error.info && error.info.message} status:
+      {error.status} message:{error.message}
+    </div>
+  )
 }
 
 const useProjects = (org, repo, token) => {
   const { data, error } = useSWR(
-    [
-      `https://api.github.com/repos/${org}/${repo}/projects?state=open`,
-      token,
-    ],
+    [`https://api.github.com/repos/${org}/${repo}/projects?state=open`, token],
     fetcher
   )
   return {
@@ -83,7 +80,7 @@ const ProjectList = ({ org, repo, onSelected }) => {
   const userctx = useContext(UserContext)
   const { projects, isLoading, error } = useProjects(org, repo, userctx.token)
 
-  if (isLoading) return <Loading resource="projects"/>
+  if (isLoading) return <Loading resource="projects" />
   if (error) return <Error resource="projects" error={error} />
 
   const onProjectClicked = (p) => {
@@ -105,7 +102,7 @@ const ColumnsList = ({ url, onColumnSelected }) => {
   const userctx = useContext(UserContext)
   const { columns, isLoading, error } = useColumns(url, userctx.token)
 
-  if (isLoading) return <Loading resource="columns"/>
+  if (isLoading) return <Loading resource="columns" />
   if (error) return <Error resource="columns" error={error} />
 
   const onColumnClicked = (c) => {
@@ -131,12 +128,10 @@ const CardInfo = ({url}) => {
   if (isLoading) return <Loading resource="card info"/>
   if (error) return <Error resource="card info" error={error} />
 
-  console.log(info)
   return (
     <Typography variant="body2" gutterBottom>
       {info.title}
     </Typography>
-
   )
 }
 
@@ -162,7 +157,6 @@ const ProjectCards = ({col}) => {
 }
 
 const ProjectSection = ({ project, onColumnSelected }) => {
-  console.log(project)
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
@@ -174,7 +168,6 @@ const ProjectSection = ({ project, onColumnSelected }) => {
 }
 
 const useStyles = makeStyles((theme) => ({
-
   container: {
     paddingTop: theme.spacing(6)
   }
