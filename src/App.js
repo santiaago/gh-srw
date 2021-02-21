@@ -2,7 +2,7 @@ import "./App.css"
 import useSWR, { useSWRInfinite, SWRConfig } from "swr"
 import React, { useContext, useState } from "react"
 import Box from "@material-ui/core/Box"
-import TopAppBar from "./AppBar"
+import TopAppBar, { FooterBar } from "./AppBar"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 import ProfileCard from "./ProfileCard"
@@ -291,6 +291,7 @@ function App() {
             </Container>
           </Paper>
         </Box>
+        <FooterBar />
       </SWRConfig>
     </UserContext.Provider>
   )
