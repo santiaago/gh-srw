@@ -5,11 +5,12 @@ import UserContext from "./UserContext"
 import useRepo from "./hooks/useRepo"
 import Paper from "@material-ui/core/Paper"
 import Grid from "@material-ui/core/Grid"
+import { Typography } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(3),
-    color: theme.palette.text.secondary,
+  container: {
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(6),
   },
 }))
 
@@ -21,16 +22,18 @@ const Repo = ({ org, repo: repoName }) => {
   if (error)
     return (
       <div>
-        failed to load repo, info:{error.info && error.info.message} status:{error.status}{" "}
-        message:{error.message}
+        failed to load repo, info:{error.info && error.info.message} status:
+        {error.status} message:{error.message}
       </div>
     )
 
   console.log(repo)
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <h1>{repo.name}</h1>
+    <Grid container className={classes.container}>
+      <Grid item>
+        <Typography variant="h2" gutterBottom>
+          {repo.name}
+        </Typography>
       </Grid>
     </Grid>
   )
