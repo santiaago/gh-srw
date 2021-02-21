@@ -24,6 +24,7 @@ import FormControl from "@material-ui/core/FormControl"
 import { Route, Switch } from "react-router"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
+import Container from "@material-ui/core/Container"
 import { useHistory } from "react-router-dom"
 
 const useOrganisations = (url, token) => {
@@ -215,66 +216,79 @@ const TypeSettings = ({ onSubmit }) => {
   )
 }
 
-function App() {
-  const token = process.env.REACT_APP_GH_TOKEN
-  console.log("token", token, process.env)
+const RepoSection = ({ org, repo }) => {
   const history = useHistory()
-  const userContext = { token }
-  const [repo, setRepo] = useState()
-  const [org, setOrg] = useState()
-  const [pageCount, setPageCount] = useState(0)
   const [currentTab, setCurrentTab] = useState(0)
 
-  const onSettingsSubmit = (org, repo) => {
-    setOrg(org)
-    setRepo(repo)
-  }
-
   const handleTabChange = (event, newValue) => {
-    if(newValue == 0){
+    if (newValue == 0) {
       history.push("/issues")
-    } else if(newValue == 1){
+    } else if (newValue == 1) {
       history.push("/projects")
     }
     setCurrentTab(newValue)
   }
 
   return (
+    <React.Fragment>
+      {org && repo && <Repo org={org} repo={repo} />}
+      <Tabs value={currentTab} onChange={handleTabChange}>
+        <Tab label="issues" />
+        <Tab label="projects" />
+      </Tabs>
+      <Switch>
+        <Route path="/issues">
+          {org && repo && <Issues org={org} repo={repo} />}
+        </Route>
+        <Route path="/projects">
+          {org && repo && <Projects org={org} repo={repo} />}
+        </Route>
+      </Switch>
+    </React.Fragment>
+  )
+}
+
+function App() {
+  const token = process.env.REACT_APP_GH_TOKEN
+  console.log("token", token, process.env)
+
+  const userContext = { token }
+  const [repo, setRepo] = useState()
+  const [org, setOrg] = useState()
+  const [pageCount, setPageCount] = useState(0)
+
+  const onSettingsSubmit = (org, repo) => {
+    setOrg(org)
+    setRepo(repo)
+  }
+
+  
+  return (
     <UserContext.Provider value={userContext}>
       <SWRConfig value={{ shouldRetryOnError: false }}>
         <AppBar />
         <Box>
           <Paper>
-            <Grid container spacing={3}>
-              <Grid xs={4} item>
-                <ProfileCard />
-              </Grid>
-              <Grid xs={8} item container spacing={2}>
-                <Grid item xs={12}>
-                  <TypeSettings onSubmit={onSettingsSubmit} />
+            <Container maxWidth="xl">
+              <Grid container spacing={3}>
+                <Grid xs={4} item>
+                  <ProfileCard />
                 </Grid>
-                <Grid item xs={12}>
-                  <SelectSettings onSubmit={onSettingsSubmit} />
+                <Grid xs={8} item container spacing={2}>
+                  <Grid item xs={12}>
+                    <TypeSettings onSubmit={onSettingsSubmit} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <SelectSettings onSubmit={onSettingsSubmit} />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            </Container>
           </Paper>
           <Paper>
-            {org && repo && <Repo org={org} repo={repo} />}
-            <Tabs value={currentTab} onChange={handleTabChange}>
-              <Tab label="issues" />
-              <Tab label="projects" />
-            </Tabs>
-            <Paper>
-            <Switch>
-              <Route path="/issues">
-                {org && repo && <Issues org={org} repo={repo} />}
-              </Route>
-              <Route path="/projects">
-                {org && repo && <Projects org={org} repo={repo} />}
-              </Route>
-            </Switch>
-            </Paper>
+            <Container maxWidth="xl">
+              <RepoSection org={org} repo={repo} />
+            </Container>
           </Paper>
         </Box>
       </SWRConfig>
