@@ -79,19 +79,26 @@ const useCardInfo = (url, token) => {
 const ProjectList = ({ org, repo, onSelected }) => {
   const userctx = useContext(UserContext)
   const { projects, isLoading, error } = useProjects(org, repo, userctx.token)
+  const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
   if (isLoading) return <Loading resource="projects" />
   if (error) return <Error resource="projects" error={error} />
 
-  const onProjectClicked = (p) => {
+  const onProjectClicked = (p, i) => {
+    setSelectedIndex(i)
     onSelected(p)
   }
 
   return (
-    <List component="nav" aria-label="secondary">
-      {projects.map((p) => (
-        <ListItem button key={`list-project-${p.id}`}>
-          <ListItemText primary={p.name} onClick={() => onProjectClicked(p)} />
+    <List component="nav" aria-label="secondary" dense>
+      {projects.map((p, i) => (
+        <ListItem
+          button
+          key={`list-project-${p.id}`}
+          selected={i === selectedIndex}
+          onClick={() => onProjectClicked(p, i)}
+        >
+          <ListItemText primary={p.name} />
         </ListItem>
       ))}
     </List>
