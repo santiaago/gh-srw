@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button"
 import Repo from "./Repo"
 import Issues from "./Issues"
 import Projects from "./Projects"
+import Timeline from "./Timeline"
 import useProfile from "./hooks/useProfile"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
@@ -234,6 +235,8 @@ const RepoSection = ({ org, repo }) => {
       history.push("/issues")
     } else if (newValue === 1) {
       history.push("/projects")
+    } else if (newValue === 2) {
+      history.push("/timeline")
     }
     setCurrentTab(newValue)
   }
@@ -254,6 +257,7 @@ const RepoSection = ({ org, repo }) => {
       <Tabs value={currentTab} onChange={handleTabChange}>
         <Tab label="issues" />
         <Tab label="projects" />
+        <Tab label="timeline" />
       </Tabs>
       <Switch>
         <Route path="/issues">
@@ -261,6 +265,9 @@ const RepoSection = ({ org, repo }) => {
         </Route>
         <Route path="/projects">
           {org && repo && <Projects org={org} repo={repo} />}
+        </Route>
+        <Route path="/timeline">
+          {org && repo && <Timeline org={org} repo={repo} />}
         </Route>
       </Switch>
     </React.Fragment>
