@@ -169,8 +169,9 @@ const ProjectSection = ({ project, onColumnSelected }) => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(6)
-  }
+    paddingTop: theme.spacing(6),
+    paddingBottom: theme.spacing(12),
+  },
 }))
 
 const Projects = ({ org, repo }) => {
@@ -194,19 +195,22 @@ const Projects = ({ org, repo }) => {
             Projects:
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <ProjectList
                 org={org}
                 repo={repo}
                 onSelected={onProjectSelected}
               />
             </Grid>
-            <Grid item xs={8}>
-              {project && <ProjectSection project={project} onColumnSelected={onColumnSelected} />}
+            <Grid item xs={2}>
+              {project && (
+                <ProjectSection
+                  project={project}
+                  onColumnSelected={onColumnSelected}
+                />
+              )}
             </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               {col && <ProjectCards col={col} />}
             </Grid>
           </Grid>
