@@ -215,7 +215,6 @@ const TimelineList = ({ org, repo, labels }) => {
 
 const LabelsList = ({ url, onChange }) => {
   const userContext = useContext(UserContext)
-  const classes = useStyles()
   const { labels, isLoading, error } = useLabels(
     `${url.replace("{/name}", "")}?per_page=100`,
     userContext.token
@@ -252,7 +251,6 @@ const LabelsList = ({ url, onChange }) => {
 }
 
 const LabelsSelection = ({ org, repo: repoName, onChange }) => {
-  const classes = useStyles()
   const userContext = useContext(UserContext)
   const { repo, isLoading, error } = useRepo(org, repoName, userContext.token)
   if (isLoading) {
@@ -273,7 +271,6 @@ const TimelineSection = ({ org, repo }) => {
     setLabels(newLabels.map((l) => l.name))
   }
 
-  console.log(org, repo, labels)
   return (
     <React.Fragment>
       <Grid container spacing={3} className={classes.container}>
