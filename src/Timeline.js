@@ -100,12 +100,12 @@ const enrichIssues = (issues) => {
   ) {
     for (let month = 0; month <= 11; month++) {
       if (
-        year == firstDate.getUTCFullYear() &&
+        year === firstDate.getUTCFullYear() &&
         month < firstDate.getUTCMonth()
       ) {
         continue
       }
-      if (year == now.getUTCFullYear() && month > now.getUTCMonth()) {
+      if (year === now.getUTCFullYear() && month > now.getUTCMonth()) {
         continue
       }
       enriched.push({
@@ -122,7 +122,7 @@ const enrichIssues = (issues) => {
       for (let i = 0; i < issues.length; i++) {
         const issue = issues[i]
         const d = new Date(issue.created_at)
-        if (d.getUTCFullYear() == year && d.getUTCMonth() == month) {
+        if (d.getUTCFullYear() === year && d.getUTCMonth() === month) {
           enriched.push(issue)
           issueCount++
         }
@@ -189,7 +189,6 @@ const IssueTimelineItem = ({ issue }) => {
 }
 
 const TimelineList = ({ org, repo, labels }) => {
-  const classes = useStyles()
   const userContext = useContext(UserContext)
   const { data, size, setSize } = useSWRInfinite(
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, labels, userContext.token),
@@ -210,7 +209,7 @@ const TimelineList = ({ org, repo, labels }) => {
     <Timeline>
       {enriched &&
         enriched.map((issue) =>
-          issue.state == "enriched" ? (
+          issue.state === "enriched" ? (
             <MonthTimelineItem issue={issue} />
           ) : (
             <IssueTimelineItem issue={issue} />
@@ -246,7 +245,6 @@ const LabelsList = ({ url, onChange }) => {
       onChange={onLabelChange}
       renderInput={(params) => (
         <TextField
-          label={params.name}
           {...params}
           variant="outlined"
           label="select labels"

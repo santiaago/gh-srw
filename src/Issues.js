@@ -4,17 +4,17 @@ import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 
 import { makeStyles } from "@material-ui/core/styles"
+
+import Button from "@material-ui/core/Button"
+import Grid from "@material-ui/core/Grid"
+import Paper from "@material-ui/core/Paper"
 import Table from "@material-ui/core/Table"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableContainer from "@material-ui/core/TableContainer"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
-import Paper from "@material-ui/core/Paper"
-import TablePagination from "@material-ui/core/TablePagination"
-import Grid from "@material-ui/core/Grid"
-import Button from "@material-ui/core/Button"
-import { Typography } from "@material-ui/core"
+import Typography from "@material-ui/core/Typography"
 
 const getIssuesKey = (pageIndex, previousPageData, owner, repo, token) => {
   if (previousPageData && !previousPageData.length) return null
@@ -27,10 +27,9 @@ const getIssuesKey = (pageIndex, previousPageData, owner, repo, token) => {
 }
 
 const useStyles = makeStyles((theme) => ({
-
   container: {
-    paddingTop: theme.spacing(6)
-  }
+    paddingTop: theme.spacing(6),
+  },
 }))
 
 const Issues = ({ org, repo }) => {
