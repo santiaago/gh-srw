@@ -15,7 +15,7 @@ import Button from "@material-ui/core/Button"
 import Repo from "./Repo"
 import Issues from "./Issues"
 import Projects from "./Projects"
-import Timeline from "./Timeline"
+import TimelineSection from "./Timeline"
 import useProfile from "./hooks/useProfile"
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from "@material-ui/core/Select"
@@ -267,7 +267,7 @@ const RepoSection = ({ org, repo }) => {
           {org && repo && <Projects org={org} repo={repo} />}
         </Route>
         <Route path="/timeline">
-          {org && repo && <Timeline org={org} repo={repo} />}
+          {org && repo && <TimelineSection org={org} repo={repo} />}
         </Route>
       </Switch>
     </React.Fragment>
@@ -281,7 +281,6 @@ function App() {
   const userContext = { token }
   const [repo, setRepo] = useState()
   const [org, setOrg] = useState()
-  const [pageCount, setPageCount] = useState(0)
 
   const onSettingsSubmit = (org, repo) => {
     setOrg(org)
