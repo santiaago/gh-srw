@@ -130,6 +130,61 @@ const enrichIssues = (issues) => {
   return enriched
 }
 
+const MonthTimelineItem = ({ issue }) => {
+  return (
+    <TimelineItem key={`i-${issue.title}`}>
+      <TimelineOppositeContent>
+        <Typography variant="h6" component="h1">
+          {issue.title}
+        </Typography>
+      </TimelineOppositeContent>
+      <TimelineSeparator>
+        <TimelineDot>
+          <Badge badgeContent={issue.monthCount} color="error">
+            <ScheduleIcon />
+          </Badge>
+        </TimelineDot>
+        <TimelineConnector />
+      </TimelineSeparator>
+      <TimelineContent />
+    </TimelineItem>
+  )
+}
+
+const IssueTimelineItem = ({ issue }) => {
+  const classes = useStyles()
+  return (
+    <TimelineItem key={`i-${issue.id}`}>
+      <TimelineSeparator>
+        <TimelineDot color={issue.state === "closed" ? "secondary" : "grey"}>
+          {issue.state === "closed" ? <DoneIcon /> : <HourglassEmptyIcon />}
+        </TimelineDot>
+        <TimelineConnector />
+      </TimelineSeparator>
+      <TimelineContent>
+        <Tooltip
+          title={new Date(issue.created_at).toLocaleDateString("en-Gb", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+          })}
+          placement="top"
+          arrow
+        >
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6" component="h1">
+              <Link href={issue.html_url}>#{issue.number}</Link>
+            </Typography>
+            <Typography variant="subtitle1" gutterBottom>
+              {issue.title}
+            </Typography>
+          </Paper>
+        </Tooltip>
+      </TimelineContent>
+    </TimelineItem>
+  )
+}
+
 const TimelineList = ({ org, repo, labels }) => {
   const classes = useStyles()
   const userContext = useContext(UserContext)
@@ -153,60 +208,9 @@ const TimelineList = ({ org, repo, labels }) => {
       {enriched &&
         enriched.map((issue) =>
           issue.state == "enriched" ? (
-            <TimelineItem key={`i-${issue.title}`}>
-              <TimelineOppositeContent>
-                <Typography variant="h6" component="h1">
-                  {issue.title}
-                </Typography>
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineDot>
-                  <Badge badgeContent={issue.monthCount} color="error">
-                    <ScheduleIcon />
-                  </Badge>
-                </TimelineDot>
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent />
-            </TimelineItem>
+            <MonthTimelineItem issue={issue} />
           ) : (
-            <TimelineItem key={`i-${issue.id}`}>
-              <TimelineSeparator>
-                <TimelineDot
-                  color={issue.state === "closed" ? "secondary" : "grey"}
-                >
-                  {issue.state === "closed" ? (
-                    <DoneIcon />
-                  ) : (
-                    <HourglassEmptyIcon />
-                  )}
-                </TimelineDot>
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent>
-                <Tooltip
-                  title={new Date(issue.created_at).toLocaleDateString(
-                    "en-Gb",
-                    {
-                      year: "numeric",
-                      month: "short",
-                      day: "2-digit",
-                    }
-                  )}
-                  placement="top"
-                  arrow
-                >
-                  <Paper elevation={3} className={classes.paper}>
-                    <Typography variant="h6" component="h1">
-                      <Link href={issue.html_url}>#{issue.number}</Link>
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
-                      {issue.title}
-                    </Typography>
-                  </Paper>
-                </Tooltip>
-              </TimelineContent>
-            </TimelineItem>
+            <IssueTimelineItem issue={issue} />
           )
         )}
     </Timeline>
