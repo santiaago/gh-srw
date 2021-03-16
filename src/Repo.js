@@ -30,7 +30,7 @@ const Repo = ({ org, repo: repoName }) => {
   return (
     <Grid container className={classes.container}>
       <Grid item>
-        <Typography variant="h2" gutterBottom>
+        <Typography variant="h3" gutterBottom>
           {repo.name}
         </Typography>
       </Grid>
