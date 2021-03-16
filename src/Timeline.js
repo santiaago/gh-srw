@@ -283,23 +283,17 @@ const TimelineSection = ({ org, repo }) => {
           <Typography variant="h5" gutterBottom>
             Timeline:
           </Typography>
-          <Grid container spacing={3}>
-            {(org && repo && (
-              <Grid item xs={4}>
-                <LabelsSelection
-                  repo={repo}
-                  org={org}
-                  onChange={onLabelChange}
-                />
-              </Grid>
-            )) || <Grid item xs={2} />}
-            <Grid item xs={6}>
-              {org && repo && labels && (
-                <TimelineList org={org} repo={repo} labels={labels} />
-              )}
-            </Grid>
-            <Grid item xs={2} />
-          </Grid>
+        </Grid>
+        <Grid item xs={10} sm={5} spacing={3}>
+          {org && repo && (
+            <LabelsSelection repo={repo} org={org} onChange={onLabelChange} />
+          )}
+        </Grid>
+        <Grid item xs={2} sm={7} />
+        <Grid item xs={12} sm={9}>
+          {org && repo && labels && (
+            <TimelineList org={org} repo={repo} labels={labels} />
+          )}
         </Grid>
       </Grid>
     </React.Fragment>
