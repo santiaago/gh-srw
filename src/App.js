@@ -121,57 +121,6 @@ const SelectOrg = ({ org, url, onChange }) => {
   )
 }
 
-const SelectSettings = ({ onSubmit }) => {
-  const userctx = useContext(UserContext)
-  const { user, isLoading, error } = useProfile(userctx.token)
-  const [org, setOrg] = useState("")
-  const [repo, setRepo] = useState("")
-  const useStyles = makeStyles((theme) => ({
-    form: {
-      display: "flex",
-    },
-  }))
-  const classes = useStyles()
-  if (isLoading) {
-    return "loading settings"
-  }
-  if (error) {
-    return "unable to load settings"
-  }
-
-  const onOrgChange = (org) => {
-    console.log(org)
-    setOrg(org)
-  }
-  const onRepoChange = (repo) => {
-    console.log(repo)
-    setRepo(repo)
-  }
-  const onSubmitSettings = () => {
-    if (org && repo) {
-      onSubmit(org.login, repo.name)
-    }
-  }
-
-  return (
-    <form noValidate autoComplete="off" className={classes.form}>
-      <SelectOrg
-        org={org}
-        url={user.organizations_url}
-        onChange={onOrgChange}
-      />
-      <SelectRepo
-        repo={repo}
-        url={org && org.repos_url}
-        onChange={onRepoChange}
-      />
-      <Button color="primary" size="large" onClick={onSubmitSettings}>
-        Submit
-      </Button>
-    </form>
-  )
-}
-
 const TypeSettings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()
   const [org, setOrg] = useState("")
@@ -303,9 +252,6 @@ function App() {
                 <Grid xs={8} item container spacing={2}>
                   <Grid item xs={12}>
                     <TypeSettings onSubmit={onSettingsSubmit} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <SelectSettings onSubmit={onSettingsSubmit} />
                   </Grid>
                 </Grid>
               </Grid>
