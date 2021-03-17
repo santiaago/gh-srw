@@ -300,4 +300,32 @@ const TimelineSection = ({ org, repo }) => {
   )
 }
 
+const FilterSelection = ({ onChange, items }) => {
+  return <FilterList onChange={onChange} items={items} />
+}
+
+const FilterList = ({ items, onChange }) => {
+  const onListChange = (event, newItems) => {
+    onChange(newItems)
+  }
+
+  return (
+    <Autocomplete
+      multiple
+      id="multiple-limit-tags"
+      options={items}
+      getOptionLabel={(option) => `#${option.number} - ${option.title}`}
+      onChange={onListChange}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          label="select items to filter"
+          placeholder="#1234"
+        />
+      )}
+    />
+  )
+}
+
 export default TimelineSection
