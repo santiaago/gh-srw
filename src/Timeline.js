@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import useSWR, { useSWRInfinite } from "swr"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
@@ -79,12 +79,12 @@ const useLabels = (url, token) => {
 
 const enrichIssues = (issues) => {
   if (!issues) {
-    return issues
+    return []
   }
   const firstDateStr = issues && issues[0].created_at
   const lastDateStr = issues && issues[issues.length - 1].created_at
   if (!firstDateStr || !lastDateStr) {
-    return issues
+    return []
   }
   const firstDate = new Date(firstDateStr)
   const lastDate = new Date(lastDateStr)
@@ -188,7 +188,7 @@ const IssueTimelineItem = ({ issue }) => {
   )
 }
 
-const TimelineList = ({ org, repo, labels }) => {
+const TimelineList = ({ org, repo, labels, setItems, itemsToFilter }) => {
   const userContext = useContext(UserContext)
   const { data, size, setSize } = useSWRInfinite(
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, labels, userContext.token),
@@ -199,6 +199,7 @@ const TimelineList = ({ org, repo, labels }) => {
     data &&
     data
       .flat()
+      .filter((x) => !itemsToFilter.includes(x))
       .sort((a, b) => a.created_at - b.created_at)
       .reverse()
 
@@ -207,18 +208,28 @@ const TimelineList = ({ org, repo, labels }) => {
   console.log(enriched)
   return (
     <Timeline>
-      {enriched &&
-        enriched.map((issue) =>
-          issue.state === "enriched" ? (
-            <MonthTimelineItem issue={issue} />
-          ) : (
-            <IssueTimelineItem issue={issue} />
-          )
-        )}
+      {enriched && <IssueTimeline issues={enriched} setItems={setItems} />}
     </Timeline>
   )
 }
 
+const IssueTimeline = ({ issues, setItems }) => {
+  useEffect(() => {
+    console.log("calling issues", issues && issues.length)
+    setItems(issues.filter((i) => i.state !== "enriched"))
+  }, [issues.length])
+  return (
+    <>
+      {issues.map((issue) =>
+        issue.state === "enriched" ? (
+          <MonthTimelineItem issue={issue} />
+        ) : (
+          <IssueTimelineItem issue={issue} />
+        )
+      )}
+    </>
+  )
+}
 const LabelsList = ({ url, onChange }) => {
   const userContext = useContext(UserContext)
   const { labels, isLoading, error } = useLabels(
@@ -264,16 +275,21 @@ const LabelsSelection = ({ org, repo: repoName, onChange }) => {
   if (error) {
     return "error repo"
   }
-  console.log(repo)
+  console.log("repoo", repo)
   return <LabelsList url={repo.labels_url} onChange={onChange} />
 }
 
 const TimelineSection = ({ org, repo }) => {
   const classes = useStyles()
   const [labels, setLabels] = useState([])
+  const [items, setItems] = useState([])
+  const [itemsToFilter, setItemsToFilter] = useState([])
 
   const onLabelChange = (newLabels) => {
     setLabels(newLabels.map((l) => l.name))
+  }
+  const onItemChange = (newItems) => {
+    setItemsToFilter(newItems)
   }
 
   return (
@@ -286,13 +302,22 @@ const TimelineSection = ({ org, repo }) => {
         </Grid>
         <Grid item xs={10} sm={5} spacing={3}>
           {org && repo && (
-            <LabelsSelection repo={repo} org={org} onChange={onLabelChange} />
+            <>
+              <LabelsSelection repo={repo} org={org} onChange={onLabelChange} />
+              <FilterSelection items={items} onChange={onItemChange} />
+            </>
           )}
         </Grid>
         <Grid item xs={2} sm={7} />
         <Grid item xs={12} sm={9}>
           {org && repo && labels && (
-            <TimelineList org={org} repo={repo} labels={labels} />
+            <TimelineList
+              org={org}
+              repo={repo}
+              labels={labels}
+              setItems={setItems}
+              itemsToFilter={itemsToFilter}
+            />
           )}
         </Grid>
       </Grid>
