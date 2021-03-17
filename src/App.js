@@ -229,6 +229,7 @@ function App() {
   const token = process.env.REACT_APP_GH_TOKEN
   console.log("token", token, process.env)
 
+  const history = useHistory()
   const userContext = { token }
   const [repo, setRepo] = useState()
   const [org, setOrg] = useState()
@@ -236,6 +237,7 @@ function App() {
   const onSettingsSubmit = (org, repo) => {
     setOrg(org)
     setRepo(repo)
+    history.push("/issues")
   }
 
   return (
