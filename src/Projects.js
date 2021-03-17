@@ -13,15 +13,15 @@ import ListItemText from "@material-ui/core/ListItemText"
 import Typography from "@material-ui/core/Typography"
 
 const Loading = ({ resource }) => {
-  return <div>loading {resource}...</div>
+  return <>loading {resource}...</>
 }
 
 const Error = ({ resource, error }) => {
   return (
-    <div>
+    <>
       failed to load {resource}, info:{error.info && error.info.message} status:
       {error.status} message:{error.message}
-    </div>
+    </>
   )
 }
 
@@ -217,14 +217,14 @@ const Projects = ({ org, repo }) => {
             Projects:
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={2}>
+            <Grid item xs={6} sm={6} lg={2}>
               <ProjectList
                 org={org}
                 repo={repo}
                 onSelected={onProjectSelected}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={6} sm={6} lg={2}>
               {project && (
                 <ProjectSection
                   project={project}
@@ -232,7 +232,7 @@ const Projects = ({ org, repo }) => {
                 />
               )}
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={10} lg={8}>
               {col && <ProjectCards col={col} />}
             </Grid>
           </Grid>
