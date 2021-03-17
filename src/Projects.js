@@ -134,17 +134,46 @@ const CardsList = ({ url }) => {
     <List component="nav" aria-label="secondary" dense>
       {cards.map((c, i) => (
         <ListItem button key={`list-card-${c.id}`}>
-          <CardInfo key={`card-${c.id}`} url={c.content_url} />
+          {c.content_url ? (
+            <IssueCardInfo key={`card-${c.id}`} url={c.content_url} />
+          ) : (
+            <CardInfo key={`card-${c.id}`} url={c.url} />
+          )}
         </ListItem>
       ))}
     </List>
   )
 }
 
+const IssueCardInfo = ({ url }) => {
+  const userctx = useContext(UserContext)
+  const { info, isLoading, error } = useCardInfo(url, userctx.token)
+  console.log(info)
+  if (isLoading) {
+    return (
+      <Typography variant="body2" gutterBottom>
+        <Loading resource="card info" />
+      </Typography>
+    )
+  }
+  if (error) {
+    return (
+      <Typography variant="body2" gutterBottom>
+        <Error resource="card info" error={error} />
+      </Typography>
+    )
+  }
+  return (
+    <Typography variant="body2" gutterBottom>
+      {info.title}
+    </Typography>
+  )
+}
+
 const CardInfo = ({ url }) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
-
+  console.log(info)
   if (isLoading) {
     return (
       <Typography variant="body2" gutterBottom>
@@ -162,7 +191,7 @@ const CardInfo = ({ url }) => {
 
   return (
     <Typography variant="body2" gutterBottom>
-      {info.title}
+      {info.note}
     </Typography>
   )
 }
