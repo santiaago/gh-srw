@@ -304,7 +304,17 @@ const TimelineSection = ({ org, repo }) => {
           {org && repo && (
             <>
               <LabelsSelection repo={repo} org={org} onChange={onLabelChange} />
-              <FilterSelection items={items} onChange={onItemChange} />
+            </>
+          )}
+        </Grid>
+        <Grid item xs={10} sm={5} spacing={3}>
+          {org && repo && (
+            <>
+              <FilterSelection
+                className={classes.filterSelection}
+                items={items}
+                onChange={onItemChange}
+              />
             </>
           )}
         </Grid>
