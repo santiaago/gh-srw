@@ -307,14 +307,14 @@ const TimelineSection = ({ org, repo }) => {
             Timeline:
           </Typography>
         </Grid>
-        <Grid item xs={10} sm={5} spacing={3}>
+        <Grid item xs={10} sm={5}>
           {org && repo && (
             <>
               <LabelsSelection repo={repo} org={org} onChange={onLabelChange} />
             </>
           )}
         </Grid>
-        <Grid item xs={10} sm={5} spacing={3}>
+        <Grid item xs={10} sm={5}>
           {org && repo && (
             <>
               <FilterSelection
