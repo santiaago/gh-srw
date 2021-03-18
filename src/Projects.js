@@ -243,14 +243,14 @@ const Projects = ({ org, repo }) => {
             Projects:
           </Typography>
           <Grid container spacing={3}>
-            <Grid item xs={6} sm={6} lg={2}>
+            <Grid item xs={6} sm={4} md={3} lg={2}>
               <ProjectList
                 org={org}
                 repo={repo}
                 onSelected={onProjectSelected}
               />
             </Grid>
-            <Grid item xs={6} sm={6} lg={2}>
+            <Grid item xs={6} sm={4} md={3} lg={2}>
               {project && (
                 <ProjectSection
                   project={project}
