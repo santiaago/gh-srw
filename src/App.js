@@ -142,7 +142,6 @@ const TypeSettings = ({ onSubmit }) => {
 
   const handleSubmit = async (org, repo) => {
     try {
-      console.log("handle submit", org, repo)
       onSubmit(org, repo)
     } catch (err) {
       console.error("something went wrong while adding organisation", err)
@@ -227,7 +226,7 @@ const RepoSection = ({ org, repo }) => {
 
 function App() {
   const token = process.env.REACT_APP_GH_TOKEN
-  console.log("token", token, process.env)
+  console.log("token and env:", token, process.env)
 
   const history = useHistory()
   const userContext = { token }

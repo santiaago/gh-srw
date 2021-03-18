@@ -44,7 +44,6 @@ const Issues = ({ org, repo }) => {
 
   let totalIssues = 0
   if (data) {
-    console.log(data)
     for (let i = 0; i < data.length; i++) {
       totalIssues += data[i].length
     }

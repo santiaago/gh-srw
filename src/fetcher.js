@@ -11,7 +11,7 @@ const fetcher = async (path, token) => {
     const error = new Error(`${path} :: ${res.status}`)
     error.info = await res.json()
     error.status = res.status
-    console.log("sending err", error)
+    console.error("sending err", error)
     throw error
   }
   return res.json()

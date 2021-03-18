@@ -26,7 +26,6 @@ const Repo = ({ org, repo: repoName }) => {
       </div>
     )
 
-  console.log(repo)
   return (
     <Grid container className={classes.container}>
       <Grid item>

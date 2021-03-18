@@ -88,8 +88,6 @@ const enrichIssues = (issues) => {
   }
   const firstDate = new Date(firstDateStr)
   const lastDate = new Date(lastDateStr)
-  console.log(firstDate)
-  console.log(lastDate)
 
   let enriched = []
   const now = new Date(Date.now())
@@ -194,7 +192,6 @@ const TimelineList = ({ org, repo, labels, setItems, itemsToFilter }) => {
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, labels, userContext.token),
     fetcher
   )
-  console.log(data)
   const issues =
     data &&
     data
@@ -204,8 +201,6 @@ const TimelineList = ({ org, repo, labels, setItems, itemsToFilter }) => {
       .reverse()
 
   const enriched = enrichIssues(issues)
-  console.log(issues)
-  console.log(enriched)
   return (
     <Timeline>
       {enriched && <IssueTimeline issues={enriched} setItems={setItems} />}
@@ -275,7 +270,6 @@ const LabelsSelection = ({ org, repo: repoName, onChange }) => {
   if (error) {
     return "error repo"
   }
-  console.log("repoo", repo)
   return <LabelsList url={repo.labels_url} onChange={onChange} />
 }
 

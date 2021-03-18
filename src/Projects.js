@@ -103,7 +103,6 @@ const ColumnsList = ({ url, onColumnSelected }) => {
 
   const onColumnClicked = (c, i) => {
     setSelectedIndex(i)
-    console.log(c)
     onColumnSelected(c)
   }
 
@@ -148,7 +147,6 @@ const CardsList = ({ url }) => {
 const IssueCardInfo = ({ url }) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
-  console.log(info)
   if (isLoading) {
     return (
       <Typography variant="body2" gutterBottom>
@@ -173,7 +171,6 @@ const IssueCardInfo = ({ url }) => {
 const CardInfo = ({ url }) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
-  console.log(info)
   if (isLoading) {
     return (
       <Typography variant="body2" gutterBottom>
