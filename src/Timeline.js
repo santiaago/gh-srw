@@ -133,7 +133,7 @@ const enrichIssues = (issues) => {
 
 const MonthTimelineItem = ({ issue }) => {
   return (
-    <TimelineItem key={`i-${issue.title}`}>
+    <TimelineItem>
       <TimelineOppositeContent>
         <Typography variant="h6" component="h1">
           {issue.title}
@@ -155,7 +155,7 @@ const MonthTimelineItem = ({ issue }) => {
 const IssueTimelineItem = ({ issue }) => {
   const classes = useStyles()
   return (
-    <TimelineItem key={`i-${issue.id}`}>
+    <TimelineItem>
       <TimelineSeparator>
         <TimelineDot color={issue.state === "closed" ? "secondary" : "grey"}>
           {issue.state === "closed" ? <DoneIcon /> : <HourglassEmptyIcon />}
