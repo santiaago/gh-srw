@@ -196,32 +196,45 @@ const TimelineList = ({ org, repo, labels, setItems, itemsToFilter }) => {
     data &&
     data
       .flat()
-      .filter((x) => !itemsToFilter.includes(x))
       .sort((a, b) => a.created_at - b.created_at)
       .reverse()
 
   const enriched = enrichIssues(issues)
   return (
     <Timeline>
-      {enriched && <IssueTimeline issues={enriched} setItems={setItems} />}
+      {enriched && (
+        <IssueTimeline
+          issues={enriched}
+          setItems={setItems}
+          itemsToFilter={itemsToFilter}
+        />
+      )}
     </Timeline>
   )
 }
 
-const IssueTimeline = ({ issues, setItems }) => {
+const IssueTimeline = ({ issues, setItems, itemsToFilter }) => {
   useEffect(() => {
-    console.log("calling issues", issues && issues.length)
-    setItems(issues.filter((i) => i.state !== "enriched"))
-  }, [issues.length])
+    setItems(
+      issues
+        .filter((i) => i.state !== "enriched")
+        .map((i) => ({ number: i.number, title: i.title }))
+    )
+  }, [issues.length, setItems])
   return (
     <>
-      {issues.map((issue) =>
-        issue.state === "enriched" ? (
-          <MonthTimelineItem issue={issue} />
-        ) : (
-          <IssueTimelineItem issue={issue} />
-        )
-      )}
+      {issues
+        .filter((x) => !itemsToFilter.map((i) => i.number).includes(x.number))
+        .map((issue) =>
+          issue.state === "enriched" ? (
+            <MonthTimelineItem
+              key={`month-${issue.id}-${issue.title}`}
+              issue={issue}
+            />
+          ) : (
+            <IssueTimelineItem key={`issue-${issue.number}`} issue={issue} />
+          )
+        )}
     </>
   )
 }
@@ -344,6 +357,7 @@ const FilterList = ({ items, onChange }) => {
       id="multiple-limit-tags"
       options={items}
       getOptionLabel={(option) => `#${option.number} - ${option.title}`}
+      getOptionSelected={(option, value) => option.number === value.number}
       onChange={onListChange}
       renderInput={(params) => (
         <TextField
