@@ -152,12 +152,12 @@ const TypeSettings = ({ onSubmit }) => {
   return (
     <form noValidate autoComplete="off" className={classes.form}>
       <TextField
-        id="standard-basic"
+        id="input-org"
         label="Organisation"
         onChange={handleOrgChange}
         value={org}
       />
-      <TextField id="standard-basic" label="Repo" onChange={handleRepoChange} />
+      <TextField id="input-repo" label="Repo" onChange={handleRepoChange} />
       <Button
         size="large"
         color="primary"
