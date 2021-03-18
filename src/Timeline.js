@@ -258,7 +258,7 @@ const LabelsList = ({ url, onChange }) => {
   return (
     <Autocomplete
       multiple
-      id="multiple-limit-tags"
+      id="multiple-limit-labels"
       options={labels}
       getOptionLabel={(option) => option.name}
       onChange={onLabelChange}
@@ -354,7 +354,7 @@ const FilterList = ({ items, onChange }) => {
   return (
     <Autocomplete
       multiple
-      id="multiple-limit-tags"
+      id="multiple-limit-filters"
       options={items}
       getOptionLabel={(option) => `#${option.number} - ${option.title}`}
       getOptionSelected={(option, value) => option.number === value.number}
