@@ -10,6 +10,7 @@ import useProfile from "./hooks/useProfile"
 import fetcher from "./fetcher"
 
 import Issues from "./Issues"
+import OrphanIssues from "./OrphanIssues"
 import ProfileCard from "./ProfileCard"
 import Projects from "./Projects"
 import Repo from "./Repo"
@@ -184,8 +185,12 @@ const RepoSection = ({ org, repo }) => {
     if (newValue === 0) {
       history.push("/issues")
     } else if (newValue === 1) {
-      history.push("/projects")
+      history.push("/orphan-issues")
     } else if (newValue === 2) {
+      history.push("/projects")
+    } else if (newValue === 3) {
+      history.push("/projects")
+    } else if (newValue === 4) {
       history.push("/timeline")
     }
     setCurrentTab(newValue)
@@ -206,12 +211,16 @@ const RepoSection = ({ org, repo }) => {
       {org && repo && <Repo org={org} repo={repo} />}
       <Tabs value={currentTab} onChange={handleTabChange}>
         <Tab label="issues" />
+        <Tab label="orphan-issues" />
         <Tab label="projects" />
         <Tab label="timeline" />
       </Tabs>
       <Switch>
         <Route path="/issues">
           {org && repo && <Issues org={org} repo={repo} />}
+        </Route>
+        <Route path="/orphan-issues">
+          {org && repo && <OrphanIssues org={org} repo={repo} />}
         </Route>
         <Route path="/projects">
           {org && repo && <Projects org={org} repo={repo} />}
