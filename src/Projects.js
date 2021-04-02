@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react"
 import useSWR from "swr"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
+import { Loading, Error } from "./Messages"
 
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -11,19 +12,6 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Typography from "@material-ui/core/Typography"
-
-const Loading = ({ resource }) => {
-  return <>loading {resource}...</>
-}
-
-const Error = ({ resource, error }) => {
-  return (
-    <>
-      failed to load {resource}, info:{error.info && error.info.message} status:
-      {error.status} message:{error.message}
-    </>
-  )
-}
 
 const useProjects = (org, repo, token) => {
   const { data, error } = useSWR(
