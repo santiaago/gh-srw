@@ -41,7 +41,7 @@ const TopAppBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            SWR and github showcase
+            github dashboard
           </Typography>
           <Typography>
             {isLoading ? "loading..." : null}
@@ -59,7 +59,7 @@ export const FooterBar = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="body2">
-          SWR and github showcase by @santiaago
+          github dashboard - SWR and github showcase by @santiaago
         </Typography>
       </Toolbar>
     </AppBar>
