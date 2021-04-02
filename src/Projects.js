@@ -3,6 +3,10 @@ import useSWR from "swr"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 import { Loading, Error } from "./Messages"
+import useProjects from "./hooks/useProjects"
+import useColumns from "./hooks/useColumns"
+import useCards from "./hooks/useCards"
+import useCardInfo from "./hooks/useCardInfo"
 
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -12,45 +16,6 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Typography from "@material-ui/core/Typography"
-
-const useProjects = (org, repo, token) => {
-  const { data, error } = useSWR(
-    [`https://api.github.com/repos/${org}/${repo}/projects?state=open`, token],
-    fetcher
-  )
-  return {
-    projects: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const useColumns = (url, token) => {
-  const { data, error } = useSWR([url, token], fetcher)
-  return {
-    columns: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const useCards = (url, token) => {
-  const { data, error } = useSWR([url, token], fetcher)
-  return {
-    cards: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const useCardInfo = (url, token) => {
-  const { data, error } = useSWR([url, token], fetcher)
-  return {
-    info: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
 
 const ProjectList = ({ org, repo, onSelected }) => {
   const userctx = useContext(UserContext)
