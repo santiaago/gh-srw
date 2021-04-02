@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { useSWRInfinite } from "swr"
 import fetcher from "./fetcher"
 import UserContext from "./UserContext"
@@ -32,22 +32,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Issues = ({ org, repo }) => {
+const Issues = ({ org, repo, addIssues }) => {
   const classes = useStyles()
   const userContext = useContext(UserContext)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(30)
+  const [totalIssues, setTotalIssues] = useState(0)
   const { data, size, setSize } = useSWRInfinite(
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, userContext.token),
     fetcher
   )
 
-  let totalIssues = 0
-  if (data) {
-    for (let i = 0; i < data.length; i++) {
-      totalIssues += data[i].length
+  useEffect(() => {
+    let count = 0
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        count += data[i].length
+        let issueNumbers = {}
+        for (let j = 0; j < data[i].length; j++) {
+          const num = data[i][j].number
+          issueNumbers = { ...issueNumbers, [num]: null }
+        }
+        addIssues(issueNumbers)
+      }
+      setTotalIssues(count)
     }
-  }
+  }, [data, setTotalIssues])
 
   return (
     <React.Fragment>

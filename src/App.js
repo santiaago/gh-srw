@@ -169,7 +169,7 @@ const TypeSettings = ({ onSubmit }) => {
   )
 }
 
-const RepoSection = ({ org, repo }) => {
+const RepoSection = ({ org, repo, addIssues, allIssuesMap }) => {
   const history = useHistory()
   const [currentTab, setCurrentTab] = useState(0)
 
@@ -217,10 +217,14 @@ const RepoSection = ({ org, repo }) => {
       </Tabs>
       <Switch>
         <Route path="/issues">
-          {org && repo && <Issues org={org} repo={repo} />}
+          {org && repo && (
+            <Issues org={org} repo={repo} addIssues={addIssues} />
+          )}
         </Route>
         <Route path="/orphan-issues">
-          {org && repo && <OrphanIssues org={org} repo={repo} />}
+          {org && repo && (
+            <OrphanIssues org={org} repo={repo} allIssuesMap={allIssuesMap} />
+          )}
         </Route>
         <Route path="/projects">
           {org && repo && <Projects org={org} repo={repo} />}
@@ -241,6 +245,11 @@ function App() {
   const userContext = { token }
   const [repo, setRepo] = useState()
   const [org, setOrg] = useState()
+  const [allIssuesMap, setAllIssuesMap] = useState({})
+
+  const addIssues = (newIssues) => {
+    setAllIssuesMap((prevMap) => ({ ...prevMap, ...newIssues }))
+  }
 
   const onSettingsSubmit = (org, repo) => {
     setOrg(org)
@@ -269,7 +278,12 @@ function App() {
           </Paper>
           <Paper>
             <Container maxWidth="xl">
-              <RepoSection org={org} repo={repo} />
+              <RepoSection
+                org={org}
+                repo={repo}
+                addIssues={addIssues}
+                allIssuesMap={allIssuesMap}
+              />
             </Container>
           </Paper>
         </Box>

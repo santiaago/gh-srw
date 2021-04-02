@@ -36,7 +36,6 @@ const IssueCardInfo = ({ url, addIssue }) => {
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
   const [once, setOnce] = useState(true)
   useEffect(() => {
-    console.log("yo", once, info.number)
     if (once && info) {
       console.log("inc issue", info.number)
       addIssue(info.number)
@@ -120,14 +119,30 @@ const ProjectList = ({ org, repo, addIssue }) => {
   )
 }
 
-const OrphanIssues = ({ org, repo }) => {
+const OrphanIssues = ({ org, repo, allIssuesMap }) => {
   const classes = useStyles()
   const userContext = useContext(UserContext)
-  const [issuesMap, setIssuesMap] = useState({})
+  const [issuesInProjectMap, setIssuesInProjectMap] = useState({})
+  const [issuesNotInProjects, setIssuesNotInProjects] = useState({})
+
+  useEffect(() => {
+    const intersection = Object.keys(allIssuesMap).filter(
+      (x) => !(x in issuesInProjectMap)
+    )
+    console.log("intersection", intersection)
+    console.log(
+      "iii",
+      Object.assign({}, ...intersection.map((x) => ({ [x]: null })))
+    )
+    console.log("all issues in map", allIssuesMap)
+    console.log("issues in project", issuesInProjectMap)
+    setIssuesNotInProjects((prev) =>
+      Object.assign({}, ...intersection.map((x) => ({ [x]: null })))
+    )
+  }, [Object.keys(issuesInProjectMap).length, Object.keys(allIssuesMap).length])
 
   const addIssue = (number) => {
-    setIssuesMap((prevMap) => ({ ...prevMap, [number]: null }))
-    debugger
+    setIssuesInProjectMap((prevMap) => ({ ...prevMap, [number]: null }))
   }
 
   return (
@@ -138,17 +153,23 @@ const OrphanIssues = ({ org, repo }) => {
             Orphan issues:
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Opened issues: {0}
+            Opened issues gathered: {Object.keys(allIssuesMap).length}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Issues linked to projects: {Object.keys(issuesMap).length}
+            Issues linked to projects: {Object.keys(issuesInProjectMap).length}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Issues not linked to projects: {0}
+            Issues not linked to projects:{" "}
+            {Object.keys(issuesNotInProjects).length}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <ProjectList org={org} repo={repo} addIssue={addIssue} />
+        </Grid>
+        <Grid item xs={6}>
+          {Object.keys(issuesNotInProjects).map((i, k) => (
+            <div>#{i}</div>
+          ))}
         </Grid>
       </Grid>
     </React.Fragment>
