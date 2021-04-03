@@ -31,12 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const IssueCardInfo = ({ url, addIssue }) => {
+const IssueCardInfo = ({ url, addIssue, project, col }) => {
   const userctx = useContext(UserContext)
   const { info, isLoading, error } = useCardInfo(url, userctx.token)
   const [once, setOnce] = useState(true)
   useEffect(() => {
-    if (once && info) {
+    if (once && info && info.state === "open") {
       addIssue(info.number, info)
       setOnce(false)
     }
@@ -62,7 +62,7 @@ const IssueCardInfo = ({ url, addIssue }) => {
   )
 }
 
-const Cards = ({ url, addIssue }) => {
+const Cards = ({ url, addIssue, project, col }) => {
   const userctx = useContext(UserContext)
   const { cards, isLoading, error } = useCards(url, userctx.token)
 
@@ -78,6 +78,8 @@ const Cards = ({ url, addIssue }) => {
               key={`card-${c.id}`}
               url={c.content_url}
               addIssue={addIssue}
+              project={project}
+              col={col}
             />
           </ListItem>
         ) : null
@@ -86,7 +88,7 @@ const Cards = ({ url, addIssue }) => {
   )
 }
 
-const Columns = ({ url, addIssue }) => {
+const Columns = ({ url, addIssue, project }) => {
   const userctx = useContext(UserContext)
   const { columns, isLoading, error } = useColumns(url, userctx.token)
 
@@ -96,7 +98,13 @@ const Columns = ({ url, addIssue }) => {
   return (
     <React.Fragment>
       {columns.map((col, i) => (
-        <Cards key={`${col.id}`} url={col.cards_url} addIssue={addIssue} />
+        <Cards
+          key={`${col.id}`}
+          url={col.cards_url}
+          addIssue={addIssue}
+          project={project}
+          col={col.name}
+        />
       ))}
     </React.Fragment>
   )
@@ -112,7 +120,12 @@ const ProjectList = ({ org, repo, addIssue }) => {
   return (
     <React.Fragment>
       {projects.map((p, i) => (
-        <Columns key={`${p.id}`} url={p.columns_url} addIssue={addIssue} />
+        <Columns
+          key={`${p.id}`}
+          url={p.columns_url}
+          addIssue={addIssue}
+          project={p.name}
+        />
       ))}
     </React.Fragment>
   )
@@ -147,7 +160,6 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
   const addIssue = (number, info) => {
     setIssuesInProjectMap((prevMap) => ({ ...prevMap, [number]: info }))
   }
-
   return (
     <React.Fragment>
       <Grid container spacing={3} className={classes.container}>
