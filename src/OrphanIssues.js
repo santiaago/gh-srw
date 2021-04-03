@@ -37,7 +37,6 @@ const IssueCardInfo = ({ url, addIssue }) => {
   const [once, setOnce] = useState(true)
   useEffect(() => {
     if (once && info) {
-      console.log("inc issue", info.number)
       addIssue(info.number)
       setOnce(false)
     }
@@ -121,7 +120,6 @@ const ProjectList = ({ org, repo, addIssue }) => {
 
 const OrphanIssues = ({ org, repo, allIssuesMap }) => {
   const classes = useStyles()
-  const userContext = useContext(UserContext)
   const [issuesInProjectMap, setIssuesInProjectMap] = useState({})
   const [issuesNotInProjects, setIssuesNotInProjects] = useState({})
 
@@ -129,13 +127,7 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
     const intersection = Object.keys(allIssuesMap).filter(
       (x) => !(x in issuesInProjectMap)
     )
-    console.log("intersection", intersection)
-    console.log(
-      "iii",
-      Object.assign({}, ...intersection.map((x) => ({ [x]: null })))
-    )
-    console.log("all issues in map", allIssuesMap)
-    console.log("issues in project", issuesInProjectMap)
+
     setIssuesNotInProjects((prev) =>
       Object.assign({}, ...intersection.map((x) => ({ [x]: null })))
     )
