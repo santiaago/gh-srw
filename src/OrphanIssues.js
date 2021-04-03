@@ -169,9 +169,6 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
     <React.Fragment>
       <Grid container spacing={3} className={classes.container}>
         <Grid item xs={12}>
-          <Typography variant="h5" gutterBottom>
-            Orphan issues:
-          </Typography>
           <Typography variant="body1" gutterBottom>
             Opened issues gathered: {Object.keys(allIssuesMap).length}
           </Typography>
@@ -183,10 +180,10 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
             {Object.keys(issuesNotInProjects).length}
           </Typography>
         </Grid>
-        <Grid item xs={6}>
-          <ProjectList org={org} repo={repo} addIssue={addIssue} />
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom>
+            Orphaned issues
+          </Typography>
           <List dense>
             {Object.keys(issuesNotInProjects).map((i, k) => (
               <Issue
@@ -196,6 +193,12 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
               />
             ))}
           </List>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5" gutterBottom>
+            Issues with projects
+          </Typography>
+          <ProjectList org={org} repo={repo} addIssue={addIssue} />
         </Grid>
       </Grid>
     </React.Fragment>
