@@ -10,6 +10,7 @@ import useProjects from "./hooks/useProjects"
 
 import { makeStyles } from "@material-ui/core/styles"
 
+import Breadcrumbs from "@material-ui/core/Breadcrumbs"
 import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import List from "@material-ui/core/List"
@@ -56,9 +57,13 @@ const IssueCardInfo = ({ url, addIssue, project, col }) => {
     )
   }
   return (
-    <Typography variant="body2" gutterBottom>
-      #{info.number} - {info.title}
-    </Typography>
+    <Breadcrumbs separator="›" aria-label="breadcrumb">
+      <Typography color="textPrimary">{project}</Typography>
+      <Typography color="textPrimary">{col}</Typography>
+      <Typography color="textPrimary">
+        #{info.number} - {info.title}
+      </Typography>
+    </Breadcrumbs>
   )
 }
 
