@@ -189,8 +189,6 @@ const RepoSection = ({ org, repo, addIssues, allIssuesMap }) => {
     } else if (newValue === 2) {
       history.push("/projects")
     } else if (newValue === 3) {
-      history.push("/projects")
-    } else if (newValue === 4) {
       history.push("/timeline")
     }
     setCurrentTab(newValue)
