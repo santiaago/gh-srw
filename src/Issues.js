@@ -35,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
 const Issues = ({ org, repo, addIssues }) => {
   const classes = useStyles()
   const userContext = useContext(UserContext)
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(30)
   const [totalIssues, setTotalIssues] = useState(0)
   const { data, size, setSize } = useSWRInfinite(
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, userContext.token),

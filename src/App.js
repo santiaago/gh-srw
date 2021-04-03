@@ -1,13 +1,10 @@
 import "./App.css"
-import useSWR, { SWRConfig } from "swr"
-import React, { useContext, useState } from "react"
+import { SWRConfig } from "swr"
+import React, { useState } from "react"
 
 import { makeStyles } from "@material-ui/core/styles"
 import { Route, Switch } from "react-router"
 import { useHistory } from "react-router-dom"
-
-import useProfile from "./hooks/useProfile"
-import fetcher from "./fetcher"
 
 import Issues from "./Issues"
 import OrphanIssues from "./OrphanIssues"
@@ -21,106 +18,12 @@ import UserContext from "./UserContext"
 import Box from "@material-ui/core/Box"
 import Button from "@material-ui/core/Button"
 import Container from "@material-ui/core/Container"
-import FormControl from "@material-ui/core/FormControl"
 import Grid from "@material-ui/core/Grid"
-import InputLabel from "@material-ui/core/InputLabel"
-import MenuItem from "@material-ui/core/MenuItem"
 import Paper from "@material-ui/core/Paper"
-import Select from "@material-ui/core/Select"
 import Tab from "@material-ui/core/Tab"
 import Tabs from "@material-ui/core/Tabs"
 import TextField from "@material-ui/core/TextField"
 import Typography from "@material-ui/core/Typography"
-
-const useOrganisations = (url, token) => {
-  const { data, error } = useSWR([url, token], fetcher)
-  return {
-    orgs: data,
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const useRepos = (url, token) => {
-  const { data, error } = useSWR([`${url}?per_page=100`, token], fetcher)
-  const byname = (r1, r2) => {
-    if (r1.full_name.toLowerCase() < r2.full_name.toLowerCase()) {
-      return -1
-    }
-    if (r1.full_name.toLowerCase() > r2.full_name.toLowerCase()) {
-      return 1
-    }
-    return 0
-  }
-
-  return {
-    repos: data && data.sort(byname),
-    isLoading: !error && !data,
-    error: error,
-  }
-}
-
-const SelectRepo = ({ repo, url, onChange }) => {
-  const userctx = useContext(UserContext)
-  const { repos, isLoading, error } = useRepos(url, userctx.token)
-
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      minWidth: 166,
-    },
-  }))
-  const classes = useStyles()
-
-  const handleChange = (event) => {
-    onChange(event.target.value)
-  }
-
-  return (
-    <FormControl className={classes.formControl}>
-      <InputLabel id="org-select-label">Repo</InputLabel>
-      <Select value={repo} onChange={handleChange}>
-        {repos &&
-          repos
-            .sort((r) => r.full_name)
-            .map((r) => (
-              <MenuItem key={`repos-${r.id}`} value={r}>
-                {r.name}
-              </MenuItem>
-            ))}
-      </Select>
-    </FormControl>
-  )
-}
-
-const SelectOrg = ({ org, url, onChange }) => {
-  const userctx = useContext(UserContext)
-  const { orgs, isLoading, error } = useOrganisations(url, userctx.token)
-
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      minWidth: 166,
-    },
-  }))
-  const classes = useStyles()
-
-  const handleChange = (event) => {
-    onChange(event.target.value)
-  }
-
-  return (
-    <FormControl className={classes.formControl}>
-      <InputLabel id="org-select-label">Organisation</InputLabel>
-      <Select value={org} onChange={handleChange}>
-        {orgs &&
-          orgs.map((o) => (
-            <MenuItem key={`org-${o.id}`} value={o}>
-              {o.login}
-            </MenuItem>
-          ))}
-      </Select>
-    </FormControl>
-  )
-}
 
 const TypeSettings = ({ onSubmit }) => {
   const [repo, setRepo] = useState()

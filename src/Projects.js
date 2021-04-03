@@ -1,6 +1,4 @@
 import React, { useContext, useState } from "react"
-import useSWR from "swr"
-import fetcher from "./fetcher"
 import UserContext from "./UserContext"
 import { Loading, Error } from "./Messages"
 import useProjects from "./hooks/useProjects"

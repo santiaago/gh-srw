@@ -87,7 +87,6 @@ const enrichIssues = (issues) => {
     return []
   }
   const firstDate = new Date(firstDateStr)
-  const lastDate = new Date(lastDateStr)
 
   let enriched = []
   const now = new Date(Date.now())
@@ -188,7 +187,7 @@ const IssueTimelineItem = ({ issue }) => {
 
 const TimelineList = ({ org, repo, labels, setItems, itemsToFilter }) => {
   const userContext = useContext(UserContext)
-  const { data, size, setSize } = useSWRInfinite(
+  const { data } = useSWRInfinite(
     (pi, ppd) => getIssuesKey(pi, ppd, org, repo, labels, userContext.token),
     fetcher
   )
