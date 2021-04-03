@@ -78,7 +78,7 @@ const Cards = ({ url, addIssue, project, col }) => {
     <React.Fragment>
       {cards.map((c, i) =>
         c.content_url ? (
-          <ListItem button key={`list-card-${c.id}`}>
+          <ListItem key={`list-card-${c.id}`}>
             <IssueCardInfo
               key={`card-${c.id}`}
               url={c.content_url}
@@ -123,7 +123,7 @@ const ProjectList = ({ org, repo, addIssue }) => {
   if (error) return <Error resource="project issues" error={error} />
 
   return (
-    <React.Fragment>
+    <List dense>
       {projects.map((p, i) => (
         <Columns
           key={`${p.id}`}
@@ -132,7 +132,7 @@ const ProjectList = ({ org, repo, addIssue }) => {
           project={p.name}
         />
       ))}
-    </React.Fragment>
+    </List>
   )
 }
 
