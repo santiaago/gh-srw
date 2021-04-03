@@ -96,7 +96,7 @@ const Columns = ({ url, addIssue }) => {
   return (
     <React.Fragment>
       {columns.map((col, i) => (
-        <Cards url={col.cards_url} addIssue={addIssue} />
+        <Cards key={`${col.id}`} url={col.cards_url} addIssue={addIssue} />
       ))}
     </React.Fragment>
   )
@@ -112,10 +112,14 @@ const ProjectList = ({ org, repo, addIssue }) => {
   return (
     <React.Fragment>
       {projects.map((p, i) => (
-        <Columns url={p.columns_url} addIssue={addIssue} />
+        <Columns key={`${p.id}`} url={p.columns_url} addIssue={addIssue} />
       ))}
     </React.Fragment>
   )
+}
+
+const Issue = ({ number }) => {
+  return <ListItem>#{number}</ListItem>
 }
 
 const OrphanIssues = ({ org, repo, allIssuesMap }) => {
@@ -159,9 +163,11 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
           <ProjectList org={org} repo={repo} addIssue={addIssue} />
         </Grid>
         <Grid item xs={6}>
-          {Object.keys(issuesNotInProjects).map((i, k) => (
-            <div>#{i}</div>
-          ))}
+          <List dense>
+            {Object.keys(issuesNotInProjects).map((i, k) => (
+              <Issue key={`orphan-issue-${i}`} number={i} />
+            ))}
+          </List>
         </Grid>
       </Grid>
     </React.Fragment>
