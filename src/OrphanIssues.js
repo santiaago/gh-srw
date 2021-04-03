@@ -37,7 +37,7 @@ const IssueCardInfo = ({ url, addIssue }) => {
   const [once, setOnce] = useState(true)
   useEffect(() => {
     if (once && info) {
-      addIssue(info.number)
+      addIssue(info.number, info)
       setOnce(false)
     }
   }, [info, addIssue, once])
@@ -118,8 +118,15 @@ const ProjectList = ({ org, repo, addIssue }) => {
   )
 }
 
-const Issue = ({ number }) => {
-  return <ListItem>#{number}</ListItem>
+const Issue = ({ number, info }) => {
+  if (!info) {
+    return null
+  }
+  return (
+    <ListItem>
+      #{number} - {info.title}
+    </ListItem>
+  )
 }
 
 const OrphanIssues = ({ org, repo, allIssuesMap }) => {
@@ -137,8 +144,8 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
     )
   }, [Object.keys(issuesInProjectMap).length, Object.keys(allIssuesMap).length])
 
-  const addIssue = (number) => {
-    setIssuesInProjectMap((prevMap) => ({ ...prevMap, [number]: null }))
+  const addIssue = (number, info) => {
+    setIssuesInProjectMap((prevMap) => ({ ...prevMap, [number]: info }))
   }
 
   return (
@@ -165,7 +172,11 @@ const OrphanIssues = ({ org, repo, allIssuesMap }) => {
         <Grid item xs={6}>
           <List dense>
             {Object.keys(issuesNotInProjects).map((i, k) => (
-              <Issue key={`orphan-issue-${i}`} number={i} />
+              <Issue
+                key={`orphan-issue-${i}`}
+                number={i}
+                info={allIssuesMap[i]}
+              />
             ))}
           </List>
         </Grid>

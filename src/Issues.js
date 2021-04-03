@@ -51,7 +51,7 @@ const Issues = ({ org, repo, addIssues }) => {
         let issueNumbers = {}
         for (let j = 0; j < data[i].length; j++) {
           const num = data[i][j].number
-          issueNumbers = { ...issueNumbers, [num]: null }
+          issueNumbers = { ...issueNumbers, [num]: data[i][j] }
         }
         addIssues(issueNumbers)
       }
